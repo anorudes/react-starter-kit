@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import Link from 'client/components/Link';
+import Link from 'client/components/Link/Link';
 import s from './AuthLayout.pcss';
 
 function AuthLayout({

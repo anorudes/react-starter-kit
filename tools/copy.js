@@ -5,7 +5,7 @@ import pkg from '../package.json';
  *
  */
 async function copy() {
-  await fs.copyDir('src/server/core/public', 'build/public');
+  await fs.copyDir('src/server/public', 'build/public');
   await fs.writeFile('./build/package.json', JSON.stringify({
     private: true,
     engines: pkg.engines,

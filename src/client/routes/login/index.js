@@ -1,4 +1,4 @@
-import AuthLayout from 'client/components/AuthLayout';
+import AuthLayout from 'client/components/AuthLayout/AuthLayout';
 import Login from './Login';
 
 export default {

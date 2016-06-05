@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import StoriesWrapper from '../StoriesWrapper/StoriesWrapper';
-import Input from './Input';
+import Input from './Input/Input';
 
 const defaultValue = 'Lorem ipsum, bro!';
 

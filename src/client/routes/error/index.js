@@ -1,4 +1,4 @@
-import Layout from 'client/components/Layout';
+import Layout from 'client/components/Layout/Layout';
 import ErrorPage from './ErrorPage';
 
 export default {

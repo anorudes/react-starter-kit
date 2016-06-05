@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import s from './Login.pcss';
-import Input from '../../components/Input';
+import Input from '../../components/Input/Input';
 
 const title = 'Войти';
 
