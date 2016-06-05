@@ -1,12 +1,3 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import Browsersync from 'browser-sync';
 import webpack from 'webpack';
 import webpackMiddleware from 'webpack-middleware';
@@ -25,7 +16,7 @@ const DEBUG = !process.argv.includes('--release');
  */
 async function start() {
   await run(clean);
-  await run(copy.bind(undefined, { watch: true }));
+  await run(copy);
   await new Promise(resolve => {
     // Patch the client-side bundle configurations
     // to enable Hot Module Replacement (HMR) and React Transform
@@ -89,6 +80,8 @@ async function start() {
           const bs = Browsersync.create();
           bs.init({
             ...(DEBUG ? {} : { notify: false, ui: false }),
+
+            open: false,
 
             proxy: {
               target: host,
