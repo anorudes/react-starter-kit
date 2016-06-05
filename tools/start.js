@@ -2,6 +2,8 @@ import Browsersync from 'browser-sync';
 import webpack from 'webpack';
 import webpackMiddleware from 'webpack-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+import R from 'ramda';
+
 import run from './run';
 import runServer from './runServer';
 import webpackConfig from './webpack.config';
@@ -10,13 +12,17 @@ import copy from './copy';
 
 const DEBUG = !process.argv.includes('--release');
 
+function catchTaskError(errors) {
+  R.forEach(err => console.error(err.message), errors);
+}
+
 /**
  * Launches a development web server with "live reload" functionality -
  * synchronizing URLs, interactions and code changes across multiple devices.
  */
 async function start() {
-  await run(clean);
-  await run(copy);
+  await run(clean).catch(err => catchTaskError(err));
+  await run(copy).catch(err => catchTaskError(err));
   await new Promise(resolve => {
     // Patch the client-side bundle configurations
     // to enable Hot Module Replacement (HMR) and React Transform

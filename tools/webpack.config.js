@@ -57,18 +57,13 @@ const config = {
           ],
           plugins: [
             'transform-runtime',
+            'transform-decorators-legacy',
+            'react-require',
             ['module-alias', [
-              'api',
-              'components',
-              'core',
-              'public',
-              'routes',
-              'view',
-            ].map(dir => ({
-              src: `${ROOT_PATH}/${dir}`,
-              expose: dir,
-            })),
-            ],
+              { src: path.resolve(__dirname, '../src/client'), expose: 'client' },
+              { src: path.resolve(__dirname, '../src/server'), expose: 'server' },
+              { src: path.resolve(__dirname, '../src/shared'), expose: 'shared' },
+            ]],
             ...DEBUG ? [] : [
               'transform-react-remove-prop-types',
               'transform-react-constant-elements',
@@ -78,7 +73,7 @@ const config = {
         },
       },
       {
-        test: /\.scss$/,
+        test: /\.(p|s)?css$/,
         loaders: [
           'isomorphic-style-loader',
           `css-loader?${JSON.stringify({
@@ -128,6 +123,11 @@ const config = {
     root: path.resolve(__dirname, '../src'),
     modulesDirectories: ['node_modules'],
     extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx', '.json'],
+    alias: {
+      client: path.resolve(__dirname, '../src/client'),
+      server: path.resolve(__dirname, '../src/server'),
+      shared: path.resolve(__dirname, '../src/shared'),
+    },
   },
 
   cache: DEBUG,
@@ -148,6 +148,12 @@ const config = {
   postcss(bundler) {
     return [
       require('postcss-import')({ addDependencyTo: bundler }),
+      require('postcss-nested'),
+      require('postcss-custom-selectors'),
+      require('postcss-custom-properties')({ warnings: false }),
+      require('postcss-color-function'),
+      require('postcss-calc'),
+      require('postcss-media-minmax'),
       require('precss')(),
       require('autoprefixer')({ browsers: AUTOPREFIXER_BROWSERS }),
     ];
@@ -218,7 +224,10 @@ const clientConfig = extend(true, {}, config, {
 // -----------------------------------------------------------------------------
 
 const serverConfig = extend(true, {}, config, {
-  entry: './server.js',
+  entry: [
+    'babel-polyfill',
+    './server.js',
+  ],
 
   output: {
     filename: '../../server.js',

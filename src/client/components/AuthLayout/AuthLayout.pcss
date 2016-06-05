@@ -1,0 +1,60 @@
+@import "../../styles/vars/colors.pcss";
+@import "../../styles/vars/fonts.pcss";
+
+.root {
+  width: 100%;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--colorBlue400);
+}
+
+.inner {
+  max-width: 40rem;
+  margin: 0 1.5rem;
+  flex-grow: 1;
+}
+
+.header {
+  text-align: center;
+  color: var(--colorWhite);
+  margin: 2rem 0 4rem;
+  line-height: 1;
+}
+
+.heading {
+  text-transform: uppercase;
+  font-size: 1.8rem;
+  font-weight: 400;
+}
+
+.logo {
+  font-family: var(--fontLogo);
+  font-size: 4.2rem;
+  font-weight: 700;
+}
+
+.main {
+  background-color: var(--colorWhite);
+  padding: 2rem 4rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 1.5rem rgba(0,0,0,0.15);
+}
+
+.footer {
+  color: var(--colorWhite);
+  margin: 4rem 0 2rem;
+  text-align: center;
+  font-weight: 300;
+  font-size: 1.4rem;
+
+  a {
+    color: var(--colorWhite);
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

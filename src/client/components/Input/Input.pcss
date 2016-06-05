@@ -1,0 +1,148 @@
+@import "../../styles/vars/colors.pcss";
+
+:root {
+  --controlBgColor:            var(--colorWhite);
+  --controlBgColorFocused:     color(var(--colorBlue300) lightness(99%));
+  --controlBorderColor:        var(--colorGrey300);
+  --controlBorderColorFocused: var(--colorBlue300);
+
+  --clearColor:                var(--colorGrey400);
+  --clearColorHovered:         var(--colorGrey600);
+
+  --transitionCommon: 150ms ease-out 100ms;
+}
+
+.root {
+  position: relative;
+  display: inline-block;
+}
+
+.availableWidth {
+  width: 100%;
+}
+
+.box {
+  position: relative;
+  display: block;
+  user-select: none;
+  width: 100%;
+}
+
+.control {
+  display: block;
+  line-height: inherit;
+  position: relative;
+  padding: 0;
+  background-color: var(--controlBgColor);
+  border: var(--controlBorderColor) 1px solid;
+  outline: 0;
+  width: 100%;
+  border-radius: 0.3rem;
+  transition:
+    background-color var(--transitionCommon),
+    border var(--transitionCommon);
+
+  &:focus {
+    background-color: var(--controlBgColorFocused);
+    border: var(--controlBorderColorFocused) 1px solid;
+  }
+}
+
+.clear {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  color: var(--clearColor);
+  transition: color var(--transitionCommon);
+
+  &:hover {
+    color: var(--clearColorHovered);
+    cursor: pointer;
+  }
+}
+
+.smallSize {
+  font-size: 1.4rem;
+
+  .control {
+    padding: 0 1rem;
+    height: 3.2rem;
+  }
+
+  .clear {
+    padding: 0.6rem 0;
+    height: 3.2rem;
+    width: 3.2rem;
+  }
+
+  &.hasClear {
+    .control {
+      padding-right: 3.2rem;
+    }
+  }
+}
+
+.mediumSize {
+  font-size: 1.6rem;
+
+  .control {
+    padding: 0 1.2rem;
+    height: 3.6rem;
+  }
+
+  .clear {
+    padding: 0.6rem 0;
+    height: 3.6rem;
+    width: 3.6rem;
+  }
+
+  &.hasClear {
+    .control {
+      padding-right: 3.6rem;
+    }
+  }
+}
+
+.largeSize {
+  font-size: 1.7rem;
+
+  .control {
+    padding: 0 1.4rem;
+    height: 4.2rem;
+  }
+
+  .clear {
+    padding: 0.6rem 0;
+    height: 4.2rem;
+    width: 4.2rem;
+  }
+
+  &.hasClear {
+    .control {
+      padding-right: 4.2rem;
+    }
+  }
+}
+
+.xLargeSize {
+  font-size: 1.8rem;
+
+  .control {
+    padding: 0 1.6rem;
+    height: 4.6rem;
+  }
+
+  .clear {
+    padding: 0.6rem 0;
+    height: 4.6rem;
+    width: 4.6rem;
+  }
+
+  &.hasClear {
+    .control {
+      padding-right: 4.6rem;
+    }
+  }
+}

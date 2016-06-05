@@ -1,6 +1,6 @@
 import GitRepo from 'git-repository';
 import run from './run';
-import fetch from './lib/fetch';
+import fetch from './utils/fetch';
 
 // TODO: Update deployment URL
 // For more information visit http://gitolite.com/deploy.html

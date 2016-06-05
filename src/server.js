@@ -1,95 +1,19 @@
-import 'babel-polyfill';
-import path from 'path';
-import express from 'express';
-import cookieParser from 'cookie-parser';
-import bodyParser from 'body-parser';
-import ReactDOM from 'react-dom/server';
-import { match } from 'universal-router';
-import PrettyError from 'pretty-error';
-import routes from 'routes';
-import apiRoutes from 'api/routes';
-import assets from './assets';
-import { port } from './config';
+import Bottle from 'bottlejs';
 
-const app = express();
+import Config from 'server/config';
+import Logger from 'server/logger';
+import Core from 'server/core';
+import SSR from 'server/ssr';
+import News from 'server/news';
 
-//
-// Tell any CSS tooling (such as Material UI) to use all vendor prefixes if the
-// user agent is not known.
-// -----------------------------------------------------------------------------
-global.navigator = global.navigator || {};
-global.navigator.userAgent = global.navigator.userAgent || 'all';
+const bottle = new Bottle();
 
-//
-// Register Node.js middleware
-// -----------------------------------------------------------------------------
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+bottle.service('Config', Config);
+bottle.service('Logger', Logger, 'Config');
+bottle.service('SSR', SSR, 'Config', 'Logger');
+bottle.service('News', News);
+bottle.service('Core', Core, 'Config', 'Logger', 'SSR', 'News');
 
-//
-// Register api middleware
-// -----------------------------------------------------------------------------
-app.use('/api/news', apiRoutes.news);
+const core = bottle.container.Core;
 
-//
-// Register server-side rendering middleware
-// -----------------------------------------------------------------------------
-app.get('*', async (req, res, next) => {
-  try {
-    let css = [];
-    let statusCode = 200;
-    const template = require('./views/index.jade');
-    const data = { title: '', description: '', css: '', body: '', entry: assets.main.js };
-
-    await match(routes, {
-      path: req.path,
-      query: req.query,
-      context: {
-        insertCss: styles => css.push(styles._getCss()),
-        setTitle: value => (data.title = value),
-        setMeta: (key, value) => (data[key] = value),
-      },
-      render(component, status = 200) {
-        css = [];
-        statusCode = status;
-        data.body = ReactDOM.renderToString(component);
-        data.css = css.join('');
-        return true;
-      },
-    });
-
-    res.status(statusCode);
-    res.send(template(data));
-  } catch (err) {
-    next(err);
-  }
-});
-
-//
-// Error handling
-// -----------------------------------------------------------------------------
-const pe = new PrettyError();
-pe.skipNodeFiles();
-pe.skipPackage('express');
-
-app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-  console.log(pe.render(err)); // eslint-disable-line no-console
-  const template = require('./views/error.jade');
-  const statusCode = err.status || 500;
-  res.status(statusCode);
-  res.send(template({
-    message: err.message,
-    stack: process.env.NODE_ENV === 'production' ? '' : err.stack,
-  }));
-});
-
-//
-// Launch the server
-// -----------------------------------------------------------------------------
-/* eslint-disable no-console */
-app.listen(port, () => {
-  console.log(`The server is running at http://localhost:${port}/`);
-});
-/* eslint-enable no-console */
+core.run();
